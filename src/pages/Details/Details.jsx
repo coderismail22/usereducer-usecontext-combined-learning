@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../../context/CartContextProvider";
 
 export const Details = () => {
   const navigate = useNavigate();
+  const { state, addToCart } = useCart();
   const [amount, setAmount] = useState(1);
   const stock = 10;
 
@@ -15,11 +17,6 @@ export const Details = () => {
     amount < stock ? setAmount(amount + 1) : setAmount(stock);
   };
 
-  const handleAddToCart = (product) => {
-    console.log("clicked add to cart", product);
-    navigate('/cart')
-    
-  };
   const product = {
     name: "T-Shirt",
     img: "https://www.aarong.com/media/catalog/product/0/1/0120000033552.jpg?optimize=high&bg-color=255,255,255&fit=bounds&height=400&width=300&canvas=300:400",
@@ -28,6 +25,14 @@ export const Details = () => {
     price: 500,
     size: "XL",
   };
+
+  const handleAddToCart = (product) => {
+    console.log("product got it ", product);
+    addToCart(product);
+    console.log("state got it ", state);
+    navigate("/cart");
+  };
+
   return (
     <div className="max-w-xs rounded overflow-hidden shadow-lg border-2">
       <img className="w-full" src={product.img} alt="Product Image" />
@@ -79,6 +84,7 @@ export const Details = () => {
           {product.size}
         </span>
         <button
+          type="button"
           onClick={() => handleAddToCart(product)}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
         >
